@@ -989,16 +989,10 @@ async function doCast() {
     const res=await fetch("https://iching-api.scylla0714.workers.dev",{
       method:"POST",
       headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        model:"gpt-4o",
-        messages:[
-          {role:"system",content:sys},
-          {role:"user",content:usr}
-        ]
-      })
+      body:JSON.stringify({system:sys, user:usr})
     });
     const data=await res.json();
-    const text=data.choices[0].message.content;
+    const text=data.candidates[0].content.parts[0].text;
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
     state.reading=parsed; state.stage="reading"; render();
   } catch(err) {
