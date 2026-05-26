@@ -986,10 +986,13 @@ async function doCast() {
 請按解卦架構，結合提問者的具體問題與這個卦的深層含義，給出五個層面的回應。引導問題要讓提問者能夠把卦象連結到自己真實的內在狀態。`;
 
   try {
-    const res=await fetch("https://iching-api.scylla0714.workers.dev",{
+    const GEMINI_KEY = "AIzaSyDprd9XJ2jCVueYGu7fsDcqh1hT8hO-xbQ";
+    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,{
       method:"POST",
       headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({system:sys, user:usr})
+      body:JSON.stringify({
+        contents:[{parts:[{text: sys + "\n\n" + usr}]}]
+      })
     });
     const data=await res.json();
     const text=data.candidates[0].content.parts[0].text;
