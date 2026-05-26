@@ -821,7 +821,7 @@ function renderQuestion() {
       <hr class="divider">
       <span class="field-label">用自己的話問出你真正的困惑</span>
       <textarea id="q-input" rows="5" oninput="onQInput(this)" placeholder="描述你的處境，以及你真正困惑的是什麼。不要問結果，試著問局勢、動態或你自己的狀態。">${state.question}</textarea>
-      <div class="char-count" id="char-count">${state.question.length} 字</div>
+      <div class="char-count" id="char-count">${state.question.length} 字${state.question.trim().length < 10 ? "　請至少描述 10 個字" : ""}</div>
       <hr class="divider">
       <div class="btn-row">
         <button class="btn-ghost" onclick="setState({stage:'intro'})">← 返回</button>
@@ -989,10 +989,16 @@ async function doCast() {
     const res=await fetch("https://iching-api.scylla0714.workers.dev",{
       method:"POST",
       headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:sys,messages:[{role:"user",content:usr}]})
+      body:JSON.stringify({
+        model:"gpt-4o",
+        messages:[
+          {role:"system",content:sys},
+          {role:"user",content:usr}
+        ]
+      })
     });
     const data=await res.json();
-    const text=data.content.map(b=>b.text||"").join("");
+    const text=data.choices[0].message.content;
     const parsed=JSON.parse(text.replace(/```json|```/g,"").trim());
     state.reading=parsed; state.stage="reading"; render();
   } catch(err) {
