@@ -999,7 +999,7 @@ async function doCast() {
     state.reading=parsed; state.stage="reading"; render();
   } catch(err) {
     console.error(err);
-    state.reading={structure:"連線異常，請稍後再試。",dynamic:"",blindspot:"",position:"",guidance:[]};
+    state.reading={structure:"錯誤：" + err.message,dynamic:"",blindspot:"",position:"",guidance:[]};
     state.stage="reading"; render();
   }
 }
