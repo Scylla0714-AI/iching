@@ -986,7 +986,7 @@ async function doCast() {
 請按解卦架構，結合提問者的具體問題與這個卦的深層含義，給出五個層面的回應。引導問題要讓提問者能夠把卦象連結到自己真實的內在狀態。`;
 
   try {
-    const res=await fetch("https://api.anthropic.com/v1/messages",{
+    const res=await fetch("https://iching-api.scylla0714.workers.dev",{
       method:"POST",
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:sys,messages:[{role:"user",content:usr}]})
